@@ -43,7 +43,7 @@ public class HashTable<K, V> {
         checkInternalCapacity();
         var bucket = getBucket(key, this.table.length);
         V oldValue = null;
-        var old = findNode(key);
+        var old = this.table[bucket];
         if (old != null) {
             if (old.value.equals(value)) {
                 return old.value;
@@ -117,28 +117,5 @@ public class HashTable<K, V> {
      */
     private int getBucket(final K key, final int capacity) {
         return Math.abs(key.hashCode() % capacity);
-    }
-
-    /**
-     * Searches for a node in a current table by a given key.
-     *
-     * @param key key
-     * @return instance of {@link Node} or null if a node with a given key does not exist
-     */
-    private Node<K, V> findNode(final K key) {
-        var currentTable = this.table;
-        Node<K, V> target = null;
-        if (size > 0) {
-            for (final Node<K, V> node : currentTable) {
-                if (node != null) {
-                    final K currentKey = node.key;
-                    if (currentKey.equals(key)) {
-                        target = node;
-                        break;
-                    }
-                }
-            }
-        }
-        return target;
     }
 }
