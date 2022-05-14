@@ -46,7 +46,7 @@ public class HashTable<K, V> {
         var old = this.table[bucket];
         if (old != null) {
             if (old.value.equals(value)) {
-                return old.value;
+                oldValue = old.value;
             } else {
                 var newNode = new Node<>(key, value);
                 newNode.next = old;
