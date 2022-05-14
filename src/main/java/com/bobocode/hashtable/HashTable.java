@@ -45,14 +45,12 @@ public class HashTable<K, V> {
         V oldValue = null;
         var old = this.table[bucket];
         if (old != null) {
-            if (old.value.equals(value)) {
-                oldValue = old.value;
-            } else {
+            if (!old.value.equals(value)) {
                 var newNode = new Node<>(key, value);
                 newNode.next = old;
                 this.table[bucket] = newNode;
-                oldValue = old.value;
             }
+            oldValue = old.value;
         } else {
             this.table[bucket] = new Node<>(key, value);
             this.size++;
