@@ -44,16 +44,23 @@ public class HashTable<K, V> {
         var bucket = getBucket(key, this.table.length);
         V oldValue = null;
         var old = this.table[bucket];
-        if (old != null) {
-            if (!old.value.equals(value)) {
-                var newNode = new Node<>(key, value);
-                newNode.next = old;
-                this.table[bucket] = newNode;
-            }
-            oldValue = old.value;
-        } else {
+        if (old == null) {
             this.table[bucket] = new Node<>(key, value);
             this.size++;
+        } else {
+            while (old != null) {
+                if (old.key.equals(key)) {
+                    if (!old.value.equals(value)) {
+                        oldValue = old.value;
+                        old.value = value;
+                        break;
+                    }
+                } else if (old.next == null) {
+                    old.next = new Node<>(key, value);
+                    this.size++;
+                }
+                old = old.next;
+            }
         }
         return oldValue;
     }
