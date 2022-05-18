@@ -3,7 +3,7 @@ package com.bobocode.hw5.reversedLL;
 import java.util.Objects;
 import java.util.Stack;
 
-public class DemoApp {
+public class ReverseLinkedList {
 
     public static void main(String[] args) {
         var head = createLinkedList(4, 3, 9, 1);
