@@ -1,4 +1,4 @@
-package com.bobocode.hw5.reversedLL;
+package com.bobocode.reversedLL;
 
 import java.util.Objects;
 import java.util.Stack;

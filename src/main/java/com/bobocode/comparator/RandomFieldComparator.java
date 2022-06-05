@@ -1,4 +1,4 @@
-package com.bobocode.hw5.comparator;
+package com.bobocode.comparator;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
