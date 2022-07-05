@@ -1,4 +1,4 @@
-package com.bobocode.context.service;
+package com.bobocode.service;
 
 import com.bobocode.context.annotations.BoboComponent;
 

@@ -1,8 +1,10 @@
-package com.bobocode.context;
+package com.bobocode;
 
-import com.bobocode.context.service.DemoService;
-import com.bobocode.context.service.EveningService;
-import com.bobocode.context.service.GreetingService;
+import com.bobocode.context.AnnotationConfigApplicationContext;
+import com.bobocode.context.ApplicationContext;
+import com.bobocode.service.DemoService;
+import com.bobocode.service.EveningService;
+import com.bobocode.service.GreetingService;
 
 import java.util.Map;
 
