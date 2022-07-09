@@ -11,6 +11,7 @@
 
     <modules>
         <module>custom-session-mechanism</module>
+        <module>largest-nasa-picture-web-service</module>
     </modules>
 
     <properties>
