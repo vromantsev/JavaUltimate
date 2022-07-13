@@ -10,7 +10,7 @@ public final class HttpUtils {
     public static URI uri(final String originalUrl) {
         try {
             return new URI(originalUrl);
-        }catch (URISyntaxException e) {
+        } catch (URISyntaxException e) {
             throw new RuntimeException(e);
         }
     }
