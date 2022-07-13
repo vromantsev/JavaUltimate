@@ -1,2 +1,8 @@
 nasa:
   api-key: DEMO_KEY
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: "*"

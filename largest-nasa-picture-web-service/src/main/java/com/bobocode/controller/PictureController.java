@@ -25,9 +25,9 @@ public class PictureController {
 
     @GetMapping("/{sol}/largest")
     public ResponseEntity<?> getLargestNASAPicture(@PathVariable("sol") final String sol) {
-        final PicData largestPicture = this.pictureService.getLargestPicture(sol);
+        final String largestPictureUrl = this.pictureService.getLargestPicture(sol);
         return ResponseEntity.status(HttpStatus.PERMANENT_REDIRECT)
-                .location(uri(largestPicture.originalUrl()))
+                .location(uri(largestPictureUrl))
                 .build();
     }
 }
