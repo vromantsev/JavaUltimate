@@ -11,6 +11,7 @@
 
     <modules>
         <module>custom-session-mechanism</module>
+        <module>reactive-largest-picture-web-service</module>
     </modules>
 
     <properties>
