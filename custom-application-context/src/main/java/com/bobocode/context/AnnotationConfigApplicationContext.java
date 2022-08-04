@@ -1,12 +1,15 @@
 package com.bobocode.context;
 
 import com.bobocode.context.annotations.BoboComponent;
+import com.bobocode.context.annotations.Inject;
 import com.bobocode.context.exceptions.BeanNameIsNotUnique;
 import com.bobocode.context.exceptions.NoSuchBeanException;
 import com.bobocode.context.exceptions.NoUniqueBeanException;
 import org.reflections.Reflections;
 
+import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Modifier;
 import java.util.Map;
 import java.util.Objects;
 import java.util.concurrent.ConcurrentHashMap;
@@ -26,6 +29,7 @@ public class AnnotationConfigApplicationContext implements ApplicationContext {
     public AnnotationConfigApplicationContext(final String packageName) {
         Objects.requireNonNull(packageName, "Package name should be not null!");
         initializeBeans(packageName);
+        injectBeans();
     }
 
     /**
@@ -98,6 +102,26 @@ public class AnnotationConfigApplicationContext implements ApplicationContext {
             } catch (NoSuchMethodException | InvocationTargetException | InstantiationException |
                      IllegalAccessException e) {
                 throw new RuntimeException(e);
+            }
+        }
+    }
+
+    private void injectBeans() {
+        for (var bean : container.values()) {
+            final Class<?> beanClass = bean.getClass();
+            final Field[] fields = beanClass.getDeclaredFields();
+            for (var field : fields) {
+                if (field.isAnnotationPresent(Inject.class)) {
+                    if (Modifier.isPrivate(field.getModifiers())) {
+                        field.setAccessible(true);
+                    }
+                    final Object injectionCandidate = getBean(field.getType());
+                    try {
+                        field.set(bean, injectionCandidate);
+                    } catch (IllegalAccessException e) {
+                        throw new RuntimeException(e);
+                    }
+                }
             }
         }
     }

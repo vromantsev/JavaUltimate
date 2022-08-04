@@ -28,5 +28,11 @@ public class DemoApp {
 
         final Map<String, DemoService> allBeans = context.getAllBeans(DemoService.class);
         System.out.println(allBeans);
+
+        System.out.println("----------------------------------------------------------------");
+        System.out.println("Injection testing");
+        System.out.println("----------------------------------------------------------------");
+        final DemoService dsByName = context.getBean("demoService", DemoService.class);
+        dsByName.talk();
     }
 }
