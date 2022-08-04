@@ -8,10 +8,15 @@
     <artifactId>JavaUltimate</artifactId>
     <packaging>pom</packaging>
     <version>1.0-SNAPSHOT</version>
+    <modules>
+        <module>custom-application-context</module>
+    </modules>
 
     <modules>
         <module>custom-session-mechanism</module>
         <module>reactive-largest-picture-web-service</module>
+        <module>enable-string-trimming</module>
+        <module>largest-nasa-picture-web-service</module>
     </modules>
 
     <properties>
@@ -24,6 +29,11 @@
         <dependency>
             <groupId>org.springframework</groupId>
             <artifactId>spring-core</artifactId>
+            <version>5.3.20</version>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-context</artifactId>
             <version>5.3.20</version>
         </dependency>
         <dependency>
