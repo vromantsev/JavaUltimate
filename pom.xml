@@ -14,6 +14,7 @@
 
     <modules>
         <module>custom-session-mechanism</module>
+        <module>reactive-largest-picture-web-service</module>
         <module>enable-string-trimming</module>
         <module>largest-nasa-picture-web-service</module>
     </modules>
