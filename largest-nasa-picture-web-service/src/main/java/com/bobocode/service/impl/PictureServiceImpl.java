@@ -1,10 +1,12 @@
-package com.bobocode.service;
+package com.bobocode.service.impl;
 
 import com.bobocode.configuration.AppProperties;
 import com.bobocode.domain.PicData;
 import com.bobocode.domain.Picture;
 import com.bobocode.domain.Pictures;
+import com.bobocode.service.PictureService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.http.HttpHeaders;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
@@ -32,8 +34,9 @@ public class PictureServiceImpl implements PictureService {
         this.httpClient = httpClient;
     }
 
+    @Cacheable(value = "picture")
     @Override
-    public PicData getLargestPicture(final String sol) {
+    public String getLargestPicture(final String sol) {
         Objects.requireNonNull(sol, "Sol parameter is supposed to be provided!");
         final URI uri = buildUri(sol);
         final Pictures pictures = this.httpClient.getForObject(uri, Pictures.class);
@@ -42,6 +45,7 @@ public class PictureServiceImpl implements PictureService {
                 .map(Picture::imgSrc)
                 .map(toPicDataMappingFunction())
                 .max(Comparator.comparing(PicData::originalUrl))
+                .map(PicData::originalUrl)
                 .orElseThrow();
     }
 
