@@ -8,15 +8,13 @@
     <artifactId>JavaUltimate</artifactId>
     <packaging>pom</packaging>
     <version>1.0-SNAPSHOT</version>
-    <modules>
-        <module>custom-application-context</module>
-    </modules>
 
     <modules>
         <module>custom-session-mechanism</module>
         <module>reactive-largest-picture-web-service</module>
         <module>enable-string-trimming</module>
         <module>largest-nasa-picture-web-service</module>
+        <module>custom-application-context</module>
     </modules>
 
     <properties>
@@ -52,6 +50,10 @@
             <version>1.18.24</version>
             <scope>compile</scope>
         </dependency>
-
+        <dependency>
+            <groupId>jakarta.servlet</groupId>
+            <artifactId>jakarta.servlet-api</artifactId>
+            <version>5.0.0</version>
+        </dependency>
     </dependencies>
 </project>
