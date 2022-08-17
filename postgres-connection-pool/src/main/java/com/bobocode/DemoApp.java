@@ -28,7 +28,8 @@ public class DemoApp {
             try (var connection = dataSource.getConnection()) {
                 connection.setAutoCommit(false);
                 try (var statement = connection.createStatement()) {
-                    var rs = statement.executeQuery("select rand() from test.products");
+                    var rs = statement.executeQuery("select rand() from test.products"); // use this for mysql
+                    //var rs = statement.executeQuery("select random() from products"); // use this for postgres
                     rs.next();
                     total += rs.getDouble(1);
                 }
