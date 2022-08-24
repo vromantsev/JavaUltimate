@@ -16,6 +16,7 @@
         <module>largest-nasa-picture-web-service</module>
         <module>custom-application-context</module>
         <module>orm</module>
+        <module>postgres-connection-pool</module>
     </modules>
 
     <properties>
