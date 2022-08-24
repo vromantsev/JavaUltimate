@@ -3,6 +3,7 @@ package com.bobocode.orm.session;
 import com.bobocode.orm.annotation.Column;
 import com.bobocode.orm.annotation.Table;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.java.Log;
 
 import javax.sql.DataSource;
 import java.lang.reflect.Field;
@@ -15,15 +16,13 @@ import java.time.LocalTime;
 import java.util.Map;
 import java.util.Objects;
 import java.util.concurrent.ConcurrentHashMap;
-import java.util.logging.Logger;
 
 /**
  * Implementation of {@link Session}.
  */
+@Log
 @RequiredArgsConstructor
 public class SessionImpl implements Session {
-
-    private static final Logger LOGGER = Logger.getLogger(SessionImpl.class.getSimpleName());
 
     private static final Map<String, Object> ENTITY_CACHE = new ConcurrentHashMap<>();
 
@@ -33,9 +32,9 @@ public class SessionImpl implements Session {
      * {@inheritDoc}
      *
      * @param entityType entity type
-     * @param id entity id
-     * @return entity from database
+     * @param id         entity id
      * @param <T>
+     * @return entity from database
      */
     @Override
     public <T> T find(final Class<T> entityType, final Object id) {
@@ -43,7 +42,7 @@ public class SessionImpl implements Session {
         Objects.requireNonNull(id, "Parameter [id] must be provided!");
         @SuppressWarnings("unchecked") final T cachedEntity = (T) ENTITY_CACHE.getOrDefault(String.valueOf(id), null);
         if (cachedEntity != null) {
-            LOGGER.info(String.format("Getting entity with id=%s from cache.", id));
+            log.info(String.format("Getting entity with id=%s from cache.", id));
             return cachedEntity;
         } else {
             return doWithJDBC(this.dataSource, entityType, id);
@@ -55,9 +54,9 @@ public class SessionImpl implements Session {
      *
      * @param dataSource current data source
      * @param entityType entity type
-     * @param id entity id
+     * @param id         entity id
+     * @param <T>        generic type
      * @return entity from db
-     * @param <T> generic type
      */
     private <T> T doWithJDBC(final DataSource dataSource, final Class<T> entityType, final Object id) {
         final String tableName = getTableName(entityType);
@@ -65,7 +64,23 @@ public class SessionImpl implements Session {
         try (final Connection connection = dataSource.getConnection();
              final PreparedStatement ps = connection.prepareStatement(sql)) {
             ps.setObject(1, id);
-            final ResultSet rs = ps.executeQuery();
+            return createObject(ps.executeQuery(), entityType, id);
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    /**
+     * Creates an object from a given result set.
+     *
+     * @param rs         result set
+     * @param entityType entity type
+     * @param id         entity id
+     * @param <T>        generic type
+     * @return created entity
+     */
+    private <T> T createObject(final ResultSet rs, final Class<T> entityType, final Object id) {
+        try {
             final T instance = entityType.getDeclaredConstructor().newInstance();
             final Field[] fields = instance.getClass().getDeclaredFields();
             if (rs.next()) {
@@ -80,11 +95,11 @@ public class SessionImpl implements Session {
                     field.set(instance, fieldValue);
                 }
             }
-            LOGGER.info(String.format("Caching entity with id=%s", id));
+            log.info(String.format("Caching entity with id=%s", id));
             ENTITY_CACHE.put(String.valueOf(id), instance);
             return instance;
-        } catch (SQLException | NoSuchMethodException | InvocationTargetException | InstantiationException |
-                 IllegalAccessException e) {
+        } catch (SQLException | InvocationTargetException | InstantiationException | IllegalAccessException |
+                 NoSuchMethodException e) {
             throw new RuntimeException(e);
         }
     }
@@ -92,7 +107,7 @@ public class SessionImpl implements Session {
     /**
      * Allows to parse {@link Timestamp} to one of the given date-time types.
      *
-     * @param field entity field
+     * @param field      entity field
      * @param fieldValue field value retrieved from db
      * @return adapted date/date-time/time value
      */
@@ -115,8 +130,8 @@ public class SessionImpl implements Session {
      * Extracts a table name from an entity.
      *
      * @param entityType entity type
+     * @param <T>        generic type
      * @return table name
-     * @param <T> generic type
      */
     private <T> String getTableName(Class<T> entityType) {
         final Table table = entityType.getDeclaredAnnotation(Table.class);
@@ -128,8 +143,8 @@ public class SessionImpl implements Session {
      * Helps to compose a simple SQL query.
      *
      * @param entityType entity type
+     * @param <T>        generic type
      * @return SQL query
-     * @param <T> generic type
      */
     private <T> String getSQLQuery(final Class<T> entityType) {
         var sqlComposer = new StringBuilder();
