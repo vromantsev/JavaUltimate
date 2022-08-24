@@ -1,7 +1,8 @@
 package com.bobocode.orm.session.factory;
 
 import com.bobocode.orm.session.Session;
-import com.bobocode.orm.session.SessionImpl;
+import com.bobocode.orm.session.impl.CacheableSession;
+import com.bobocode.orm.session.impl.SimpleSession;
 import lombok.RequiredArgsConstructor;
 
 import javax.sql.DataSource;
@@ -22,6 +23,16 @@ public class SessionFactory {
      */
     public Session createSession() {
         Objects.requireNonNull(this.dataSource, "Data source must be initialized first!");
-        return new SessionImpl(this.dataSource);
+        return new SimpleSession(this.dataSource);
+    }
+
+    /**
+     * Creates an instance of {@link Session} that uses caching.
+     *
+     * @return instance of {@link Session}
+     */
+    public Session createCacheableSession() {
+        Objects.requireNonNull(this.dataSource, "Data source must be initialized first!");
+        return new CacheableSession(this.dataSource);
     }
 }

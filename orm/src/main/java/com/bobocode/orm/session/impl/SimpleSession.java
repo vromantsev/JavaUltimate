@@ -1,9 +1,9 @@
-package com.bobocode.orm.session;
+package com.bobocode.orm.session.impl;
 
 import com.bobocode.orm.annotation.Column;
 import com.bobocode.orm.annotation.Table;
+import com.bobocode.orm.session.Session;
 import lombok.RequiredArgsConstructor;
-import lombok.extern.java.Log;
 
 import javax.sql.DataSource;
 import java.lang.reflect.Field;
@@ -13,18 +13,13 @@ import java.sql.*;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
-import java.util.Map;
 import java.util.Objects;
-import java.util.concurrent.ConcurrentHashMap;
 
 /**
  * Implementation of {@link Session}.
  */
-@Log
 @RequiredArgsConstructor
-public class SessionImpl implements Session {
-
-    private static final Map<String, Object> ENTITY_CACHE = new ConcurrentHashMap<>();
+public class SimpleSession implements Session {
 
     private final DataSource dataSource;
 
@@ -33,20 +28,22 @@ public class SessionImpl implements Session {
      *
      * @param entityType entity type
      * @param id         entity id
-     * @param <T>
+     * @param <T> generic type
      * @return entity from database
      */
     @Override
     public <T> T find(final Class<T> entityType, final Object id) {
         Objects.requireNonNull(entityType, "Parameter [entityType] must be provided!");
         Objects.requireNonNull(id, "Parameter [id] must be provided!");
-        @SuppressWarnings("unchecked") final T cachedEntity = (T) ENTITY_CACHE.getOrDefault(String.valueOf(id), null);
-        if (cachedEntity != null) {
-            log.info(String.format("Getting entity with id=%s from cache.", id));
-            return cachedEntity;
-        } else {
-            return doWithJDBC(this.dataSource, entityType, id);
-        }
+        return doWithJDBC(this.dataSource, entityType, id);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void close() {
+        // no-op
     }
 
     /**
@@ -59,8 +56,7 @@ public class SessionImpl implements Session {
      * @return entity from db
      */
     private <T> T doWithJDBC(final DataSource dataSource, final Class<T> entityType, final Object id) {
-        final String tableName = getTableName(entityType);
-        final String sql = String.format(getSQLQuery(entityType), tableName);
+        final String sql = getSQLQuery(entityType);
         try (final Connection connection = dataSource.getConnection();
              final PreparedStatement ps = connection.prepareStatement(sql)) {
             ps.setObject(1, id);
@@ -95,8 +91,6 @@ public class SessionImpl implements Session {
                     field.set(instance, fieldValue);
                 }
             }
-            log.info(String.format("Caching entity with id=%s", id));
-            ENTITY_CACHE.put(String.valueOf(id), instance);
             return instance;
         } catch (SQLException | InvocationTargetException | InstantiationException | IllegalAccessException |
                  NoSuchMethodException e) {
@@ -127,19 +121,6 @@ public class SessionImpl implements Session {
     }
 
     /**
-     * Extracts a table name from an entity.
-     *
-     * @param entityType entity type
-     * @param <T>        generic type
-     * @return table name
-     */
-    private <T> String getTableName(Class<T> entityType) {
-        final Table table = entityType.getDeclaredAnnotation(Table.class);
-        final String tableName = table.name();
-        return tableName;
-    }
-
-    /**
      * Helps to compose a simple SQL query.
      *
      * @param entityType entity type
@@ -161,6 +142,7 @@ public class SessionImpl implements Session {
             }
         }
         sqlComposer.append(" FROM test.%s WHERE id = ?");
-        return sqlComposer.toString();
+        final Table table = entityType.getDeclaredAnnotation(Table.class);
+        return String.format(sqlComposer.toString(), table.name());
     }
 }

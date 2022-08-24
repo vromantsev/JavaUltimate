@@ -11,7 +11,8 @@ public class DemoApp {
     public static void main(String[] args) {
         DataSource mysqlDataSource = initializeDataSource();
         var sf = new SessionFactory(mysqlDataSource);
-        final Session session = sf.createSession();
+        //final Session session = sf.createSession();
+        final Session session = sf.createCacheableSession();
         final Product product = session.find(Product.class, 11L);
         System.out.println(product);
 

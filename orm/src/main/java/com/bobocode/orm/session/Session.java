@@ -15,4 +15,9 @@ public interface Session {
      */
     <T> T find(final Class<T> entityType, Object id);
 
+    /**
+     * Releases session-related resources.
+     */
+    void close();
+
 }
