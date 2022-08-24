@@ -15,6 +15,7 @@
         <module>enable-string-trimming</module>
         <module>largest-nasa-picture-web-service</module>
         <module>custom-application-context</module>
+        <module>orm</module>
     </modules>
 
     <properties>
