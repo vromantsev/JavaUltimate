@@ -39,4 +39,19 @@ public class CacheableSession extends SimpleSession {
     public void close() {
         this.entityCache.clear();
     }
+
+    @Override
+    public <T> void persist(T entity) {
+        super.persist(entity);
+    }
+
+    @Override
+    public <T> void remove(T entity) {
+        super.remove(entity);
+    }
+
+    @Override
+    public void flush() {
+        super.flush();
+    }
 }

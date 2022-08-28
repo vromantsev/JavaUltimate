@@ -9,9 +9,9 @@ public interface Session {
      * Searches for an entity by a given identifier.
      *
      * @param entityType entity type
-     * @param id entity id
+     * @param id         entity id
+     * @param <T>        generic type
      * @return entity from database
-     * @param <T> generic type
      */
     <T> T find(final Class<T> entityType, Object id);
 
@@ -19,5 +19,11 @@ public interface Session {
      * Releases session-related resources.
      */
     void close();
+
+    <T> void persist(final T entity);
+
+    <T> void remove(final T entity);
+
+    void flush();
 
 }

@@ -1,14 +1,16 @@
 package com.bobocode.orm.entity;
 
 import com.bobocode.orm.annotation.Column;
+import com.bobocode.orm.annotation.Id;
 import com.bobocode.orm.annotation.Table;
 
 import java.time.LocalDateTime;
 import java.util.Objects;
 
-@Table(name = "products")
+@Table(name = "products", schema = "test")
 public class Product {
 
+    @Id
     @Column(name = "id")
     private Long id;
 
