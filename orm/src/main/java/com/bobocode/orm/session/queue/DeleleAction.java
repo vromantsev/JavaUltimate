@@ -7,7 +7,7 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class DeleleAction implements Action {
 
-    private static final int DELETE_ACTION_ORDER = 3;
+    private static final int DELETE_ACTION_ORDER = 2;
     private static final String DELETE_QUERY = "DELETE FROM %s WHERE %s";
 
     private final Object entity;
