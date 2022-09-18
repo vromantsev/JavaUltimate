@@ -1,36 +1,34 @@
 package com.bobocode.pool;
 
-import org.postgresql.ds.PGSimpleDataSource;
-
+import javax.sql.DataSource;
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.Objects;
 import java.util.Queue;
 import java.util.concurrent.ConcurrentLinkedDeque;
 
-public class PooledDataSource extends PGSimpleDataSource {
+public class DriverAgnosticPooledDataSource extends NoOperationDataSource {
 
     private static final int POOL_SIZE = 10;
 
     private final Queue<Connection> pool;
+    private final DataSource dataSource;
 
-    public PooledDataSource(final String url, final String username, final String password) {
+    public DriverAgnosticPooledDataSource(final DataSource dataSource) {
+        this.dataSource = Objects.requireNonNull(dataSource, "Parameter [dataSource] must be provided!");
         this.pool = new ConcurrentLinkedDeque<>();
-        super.setURL(Objects.requireNonNull(url));
-        super.setUser(Objects.requireNonNull(username));
-        super.setPassword(Objects.requireNonNull(password));
         initializePool();
     }
 
     @Override
-    public Connection getConnection() throws SQLException {
+    public Connection getConnection() {
         return this.pool.poll();
     }
 
     private void initializePool() {
         for (int i = 0; i < POOL_SIZE; i++) {
             try {
-                final Connection connection = new ConnectionProxy(super.getConnection(), this.pool);
+                final Connection connection = new ConnectionProxy(this.dataSource.getConnection(), this.pool);
                 this.pool.add(connection);
             } catch (SQLException e) {
                 throw new RuntimeException(e);
