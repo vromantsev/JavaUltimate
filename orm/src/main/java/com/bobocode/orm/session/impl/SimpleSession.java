@@ -3,7 +3,12 @@ package com.bobocode.orm.session.impl;
 import com.bobocode.orm.annotation.Column;
 import com.bobocode.orm.annotation.Table;
 import com.bobocode.orm.session.Session;
+import com.bobocode.orm.session.queue.Action;
+import com.bobocode.orm.session.queue.DeleleAction;
+import com.bobocode.orm.session.queue.InsertAction;
+import com.bobocode.orm.utils.EntityUtils;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.java.Log;
 
 import javax.sql.DataSource;
 import java.lang.reflect.Field;
@@ -13,29 +18,34 @@ import java.sql.*;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
+import java.util.Comparator;
 import java.util.Objects;
+import java.util.Queue;
+import java.util.concurrent.ConcurrentLinkedQueue;
 
 /**
  * Implementation of {@link Session}.
  */
+@Log
 @RequiredArgsConstructor
 public class SimpleSession implements Session {
 
     private final DataSource dataSource;
+    private final Queue<Action> actionQueue = new ConcurrentLinkedQueue<>();
 
     /**
      * {@inheritDoc}
      *
      * @param entityType entity type
      * @param id         entity id
-     * @param <T> generic type
+     * @param <T>        generic type
      * @return entity from database
      */
     @Override
     public <T> T find(final Class<T> entityType, final Object id) {
         Objects.requireNonNull(entityType, "Parameter [entityType] must be provided!");
         Objects.requireNonNull(id, "Parameter [id] must be provided!");
-        return doWithJDBC(this.dataSource, entityType, id);
+        return executeQuery(this.dataSource, entityType, id);
     }
 
     /**
@@ -44,6 +54,37 @@ public class SimpleSession implements Session {
     @Override
     public void close() {
         // no-op
+    }
+
+    @Override
+    public <T> void persist(final T entity) {
+        Objects.requireNonNull(entity, "Parameter [entity] must not be null!");
+        var insertAction = new InsertAction(entity);
+        this.actionQueue.add(insertAction);
+    }
+
+    @Override
+    public <T> void remove(final T entity) {
+        Objects.requireNonNull(entity, "Parameter [entity] must not be null!");
+        var deleteAction = new DeleleAction(entity);
+        this.actionQueue.add(deleteAction);
+    }
+
+    @Override
+    public void flush() {
+        this.actionQueue.stream()
+                .sorted(Comparator.comparing(Action::getOrder))
+                .forEach(this::fireAction);
+    }
+
+    private void fireAction(final Action action) {
+        try (final Connection connection = this.dataSource.getConnection();
+             final PreparedStatement ps = EntityUtils.preparedStatement(connection.prepareStatement(action.createSQL()), action)) {
+            final int rowsUpdated = ps.executeUpdate();
+            log.info(String.format("Executed action of type=%s, entity=%s. Updated %d row(s)", action.getActionType().name(), action.getEntity(), rowsUpdated));
+        } catch (SQLException e) {
+            throw new RuntimeException(e.getMessage(), e);
+        }
     }
 
     /**
@@ -55,7 +96,7 @@ public class SimpleSession implements Session {
      * @param <T>        generic type
      * @return entity from db
      */
-    private <T> T doWithJDBC(final DataSource dataSource, final Class<T> entityType, final Object id) {
+    private <T> T executeQuery(final DataSource dataSource, final Class<T> entityType, final Object id) {
         final String sql = getSQLQuery(entityType);
         try (final Connection connection = dataSource.getConnection();
              final PreparedStatement ps = connection.prepareStatement(sql)) {

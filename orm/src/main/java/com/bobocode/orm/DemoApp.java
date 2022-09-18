@@ -6,20 +6,24 @@ import com.bobocode.orm.session.factory.SessionFactory;
 import com.mysql.cj.jdbc.MysqlDataSource;
 
 import javax.sql.DataSource;
+import java.time.LocalDateTime;
 
 public class DemoApp {
     public static void main(String[] args) {
         DataSource mysqlDataSource = initializeDataSource();
         var sf = new SessionFactory(mysqlDataSource);
-        //final Session session = sf.createSession();
-        final Session session = sf.createCacheableSession();
-        final Product product = session.find(Product.class, 11L);
-        System.out.println(product);
+        final Session session = sf.createSession();
+        //final Session session = sf.createCacheableSession();
 
-        final Product p = session.find(Product.class, 11L);
-        System.out.println(p);
+        Product newProduct = new Product();
+        newProduct.setName("Bayraktar");
+        newProduct.setPrice(1000_000);
+        newProduct.setCreatedAt(LocalDateTime.now());
+        newProduct.setId(5L);
+        session.remove(newProduct);
+        //session.persist(newProduct);
 
-        System.out.println(product == p);
+        session.flush();
     }
 
     private static DataSource initializeDataSource() {
