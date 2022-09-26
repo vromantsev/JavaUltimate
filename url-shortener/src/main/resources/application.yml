@@ -1,7 +1,7 @@
 spring:
   datasource:
-    username: ju22user
-    password: ju22pass
+    username: postgres
+    password: postgres
     url: jdbc:postgresql://localhost:5432/postgres?currentSchema=romantsev
     driver-class-name: org.postgresql.Driver
   jpa:

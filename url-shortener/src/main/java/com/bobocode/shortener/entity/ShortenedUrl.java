@@ -18,7 +18,7 @@ public class ShortenedUrl {
 
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "short_url_gen")
-    @SequenceGenerator(name = "short_url_seq", sequenceName = "short_url_gen", schema = "romantsev", allocationSize = 1)
+    @SequenceGenerator(name = "short_url_gen", sequenceName = "short_url_seq", schema = "romantsev", allocationSize = 1)
     private Long id;
 
     @Column(name = "short_url_id", nullable = false)

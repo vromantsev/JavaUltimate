@@ -16,13 +16,15 @@ import java.util.Objects;
 @RequiredArgsConstructor
 public class DefaultURLShortenService implements URLShortenService {
 
+    private static final String URL_TEMPLATE = "https://boboshort.com/";
+
     private final ShortenedUrlRepository shortenedUrlRepository;
 
     @Transactional
     @Override
     public String shortenUrl(final URLPayload payload) {
         Objects.requireNonNull(payload);
-        var url = RandomStringUtils.randomAlphanumeric(10);
+        var url = URL_TEMPLATE + RandomStringUtils.randomAlphanumeric(10);
         var shortenedUrl = ShortenedUrl.builder()
                 .shortUrlId(url)
                 .originalUrl(payload.getUrl())
