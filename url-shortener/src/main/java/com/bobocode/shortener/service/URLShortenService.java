@@ -6,6 +6,6 @@ public interface URLShortenService {
 
     String shortenUrl(final URLPayload payload);
 
-    String findOriginalURLById(final String urlId);
+    String findOriginalURLByShortUrl(final String shortUrl);
 
 }

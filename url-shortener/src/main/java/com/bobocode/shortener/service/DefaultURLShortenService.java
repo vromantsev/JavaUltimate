@@ -36,10 +36,10 @@ public class DefaultURLShortenService implements URLShortenService {
 
     @Transactional(readOnly = true)
     @Override
-    public String findOriginalURLById(final String urlId) {
-        Objects.requireNonNull(urlId);
-        final ShortenedUrl shortenedUrl = this.shortenedUrlRepository.findByShortUrl(urlId)
-                .orElseThrow(() -> new IllegalArgumentException("Entity with id='%s' not found!".formatted(urlId)));
+    public String findOriginalURLByShortUrl(final String shortUrl) {
+        Objects.requireNonNull(shortUrl);
+        final ShortenedUrl shortenedUrl = this.shortenedUrlRepository.findByShortUrl(shortUrl)
+                .orElseThrow(() -> new IllegalArgumentException("Entity with id='%s' not found!".formatted(shortUrl)));
         return shortenedUrl.getOriginalUrl();
     }
 }

@@ -27,7 +27,7 @@ public class URLShortenerController {
 
     @GetMapping("/short/urls/{shortenUrlId}")
     public ResponseEntity<?> openRealURL(@PathVariable("shortenUrlId") final String urlId) {
-        final String originalUrl = this.urlShortenService.findOriginalURLById(urlId);
+        final String originalUrl = this.urlShortenService.findOriginalURLByShortUrl(urlId);
         return ResponseEntity
                 .status(HttpStatus.PERMANENT_REDIRECT)
                 .location(UrlUtils.createURI(originalUrl))
