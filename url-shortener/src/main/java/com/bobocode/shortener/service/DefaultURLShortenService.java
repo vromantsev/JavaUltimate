@@ -4,6 +4,7 @@ import com.bobocode.shortener.dto.URLPayload;
 import com.bobocode.shortener.entity.ShortenedUrl;
 import com.bobocode.shortener.repository.ShortenedUrlRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -34,6 +35,7 @@ public class DefaultURLShortenService implements URLShortenService {
         return url;
     }
 
+    @Cacheable("short-url")
     @Transactional(readOnly = true)
     @Override
     public String findOriginalURLByShortUrl(final String shortUrl) {
