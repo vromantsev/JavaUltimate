@@ -22,7 +22,8 @@ public class URLShortenerController {
         final String shortenUrl = this.urlShortenService.shortenUrl(payload);
         return ResponseEntity
                 .status(HttpStatus.CREATED)
-                .header(HttpHeaders.LOCATION, shortenUrl)
+                .header(HttpHeaders.LOCATION, payload.getUrl())
+                .header("X-Short-URL-Id", shortenUrl)
                 .build();
     }
 
