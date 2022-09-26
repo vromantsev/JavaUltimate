@@ -33,13 +33,13 @@ public class DefaultURLShortenService implements URLShortenService {
         return url;
     }
 
-    @Cacheable("short-url")
+    @Cacheable("short-url-id")
     @Transactional(readOnly = true)
     @Override
-    public String findOriginalURLByShortUrl(final String shortUrl) {
-        Objects.requireNonNull(shortUrl);
-        final ShortenedUrl shortenedUrl = this.shortenedUrlRepository.findByShortUrl(shortUrl)
-                .orElseThrow(() -> new IllegalArgumentException("Entity with id='%s' not found!".formatted(shortUrl)));
+    public String findOriginalURLByShortUrl(final String shortUrlId) {
+        Objects.requireNonNull(shortUrlId);
+        final ShortenedUrl shortenedUrl = this.shortenedUrlRepository.findByShortUrlId(shortUrlId)
+                .orElseThrow(() -> new IllegalArgumentException("Entity with id='%s' not found!".formatted(shortUrlId)));
         return shortenedUrl.getOriginalUrl();
     }
 }
