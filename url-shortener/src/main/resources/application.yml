@@ -5,6 +5,4 @@ spring:
     url: jdbc:postgresql://localhost:5432/postgres?currentSchema=romantsev
     driver-class-name: org.postgresql.Driver
   jpa:
-    hibernate:
-      ddl-auto: update
     open-in-view: false

@@ -2,12 +2,13 @@ package com.bobocode.shortener.controller;
 
 import com.bobocode.shortener.dto.URLPayload;
 import com.bobocode.shortener.service.URLShortenService;
-import com.bobocode.shortener.utils.UrlUtils;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import java.net.URI;
 
 @RestController
 @RequestMapping("/api")
@@ -30,7 +31,7 @@ public class URLShortenerController {
         final String originalUrl = this.urlShortenService.findOriginalURLByShortUrl(urlId);
         return ResponseEntity
                 .status(HttpStatus.PERMANENT_REDIRECT)
-                .location(UrlUtils.createURI(originalUrl))
+                .location(URI.create(originalUrl))
                 .build();
     }
 }

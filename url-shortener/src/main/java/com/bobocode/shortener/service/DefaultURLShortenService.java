@@ -26,7 +26,7 @@ public class DefaultURLShortenService implements URLShortenService {
         final int randomValue = ThreadLocalRandom.current().nextInt(0, Integer.MAX_VALUE);
         var url = URL_TEMPLATE + randomValue;
         var shortenedUrl = ShortenedUrl.builder()
-                .shortUrl(url)
+                .shortUrlId(url)
                 .originalUrl(payload.getUrl())
                 .title(payload.getTitle())
                 .createdAt(LocalDateTime.now())

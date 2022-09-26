@@ -9,7 +9,7 @@ import java.time.LocalDateTime;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-@EqualsAndHashCode(of = {"id", "shortUrl"})
+@EqualsAndHashCode(of = {"id", "shortUrlId"})
 @Builder
 @ToString
 @Entity
@@ -21,8 +21,8 @@ public class ShortenedUrl {
     @SequenceGenerator(name = "short_url_seq", sequenceName = "short_url_gen", schema = "romantsev", allocationSize = 1)
     private Long id;
 
-    @Column(name = "short_url", nullable = false)
-    private String shortUrl;
+    @Column(name = "short_url_id", nullable = false)
+    private String shortUrlId;
 
     @Column(name = "original_url", nullable = false)
     private String originalUrl;
