@@ -17,6 +17,7 @@
         <module>custom-application-context</module>
         <module>orm</module>
         <module>postgres-connection-pool</module>
+        <module>url-shortener</module>
     </modules>
 
     <properties>
