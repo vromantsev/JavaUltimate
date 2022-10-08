@@ -1,0 +1,8 @@
+app:
+  feign-client:
+    name: mars-photos-feign-client
+    host: https://api.nasa.gov
+    url: /mars-photos/api/v1/rovers/curiosity/photos
+  api:
+    external:
+      api-key: DEMO_KEY
