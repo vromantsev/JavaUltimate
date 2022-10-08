@@ -21,6 +21,7 @@
         <module>credit-advisory-app</module>
         <module>mars-largest-picture</module>
         <module>url-shortener-redis</module>
+        <module>mars-largest-pic-reactive</module>
     </modules>
 
     <properties>

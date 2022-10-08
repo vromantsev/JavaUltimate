@@ -1,0 +1,9 @@
+app:
+  api:
+    external:
+      url: https://api.nasa.gov/mars-photos/api/v1/rovers/curiosity/photos
+      api-key: DEMO_KEY
+    headers:
+      sol: sol
+      camera: camera
+      api-key: api_key
