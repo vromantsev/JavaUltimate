@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 )
 public interface MarsPhotosFeignClient {
 
-    @GetMapping(value = "${app.feign-client.url}")
+    @GetMapping(value = "${app.feign-client.endpoint}")
     Photos getPhotos(@RequestParam("sol") final int sol,
                      @RequestParam(value = "api_key") final String apiKey,
                      @RequestParam(value = "camera", required = false) final String camera);
