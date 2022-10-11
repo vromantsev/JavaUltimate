@@ -1,0 +1,5 @@
+nasa:
+  photos:
+    source: nasa-proxy-service
+    endpoint: /mars/pictures/all
+  api-key: DEMO_KEY
