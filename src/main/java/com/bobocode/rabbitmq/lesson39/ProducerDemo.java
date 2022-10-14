@@ -1,4 +1,4 @@
-package com.bobocode.rabbitmq;
+package com.bobocode.rabbitmq.lesson39;
 
 import com.rabbitmq.client.ConnectionFactory;
 
