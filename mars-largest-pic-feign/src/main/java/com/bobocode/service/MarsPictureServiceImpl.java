@@ -12,7 +12,6 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
-import java.net.URI;
 import java.util.Comparator;
 import java.util.Objects;
 import java.util.function.Function;
@@ -41,10 +40,8 @@ public class MarsPictureServiceImpl implements MarsPictureService {
         return photo -> {
             final String originalUrl = photo.imgSrc();
             final HttpHeaders originalHeaders = this.restTemplate.headForHeaders(originalUrl);
-            final URI location = originalHeaders.getLocation();
-            final HttpHeaders realPicHeaders = this.restTemplate.headForHeaders(Objects.requireNonNull(location));
-            final long contentLength = realPicHeaders.getContentLength();
-            return new PicData(location.toString(), contentLength);
+            final long contentLength = originalHeaders.getContentLength();
+            return new PicData(originalUrl, contentLength);
         };
     }
 }
