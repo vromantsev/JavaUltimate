@@ -1,0 +1,19 @@
+app:
+  nasa:
+    api:
+      url: https://api.nasa.gov/mars-photos/api/v1/rovers/curiosity/photos
+      api-key: DEMO_KEY
+    headers:
+      sol: sol
+      api-key: api_key
+      camera: camera
+
+spring:
+  rabbitmq:
+    host: localhost
+    port: 5672
+    username: guest
+    password: guest
+    listener:
+      simple:
+        default-requeue-rejected: false

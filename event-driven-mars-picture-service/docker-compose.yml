@@ -1,0 +1,9 @@
+version: "3.9"
+
+services:
+  rabbitmq:
+    container_name: rabbimq-local
+    image: rabbitmq:management
+    ports:
+      - "5672:5672"
+      - "15672:15672"
