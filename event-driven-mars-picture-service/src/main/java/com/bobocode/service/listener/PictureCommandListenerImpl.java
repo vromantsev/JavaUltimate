@@ -25,7 +25,7 @@ public class PictureCommandListenerImpl implements PictureCommandListener {
         final PicData largestMarsPicture = this.marsPictureService.getLargestMarsPicture(details.request());
         final String commandId = details.commandId();
         final String url = largestMarsPicture.url();
-        log.info("Saving picture: commandId='{}'m url='{}'", commandId, url);
+        log.info("Saving picture: commandId='{}', url='{}'", commandId, url);
         this.pictureRepository.save(commandId, url);
     }
 }
