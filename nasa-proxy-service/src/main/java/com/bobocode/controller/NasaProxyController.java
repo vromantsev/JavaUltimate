@@ -29,7 +29,7 @@ public class NasaProxyController {
 
     @GetMapping(value = "/redis/largest", produces = MediaType.IMAGE_JPEG_VALUE)
     public ResponseEntity<byte[]> getPictureFromRedis(@RequestParam("id") final String id) {
-        byte[] picture = this.nasaProxyService.getPictureFromCacheById(id);
+        final byte[] picture = this.nasaProxyService.getPictureFromCacheById(id);
         return ResponseEntity.ok(picture);
     }
 }
