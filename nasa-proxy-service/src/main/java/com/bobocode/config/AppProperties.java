@@ -16,7 +16,4 @@ public class AppProperties {
 
     @Value("${app.nasa.api.headers.camera}")
     private String cameraHeader;
-
-    @Value("${app.nasa.api.headers.api-key}")
-    private String apiKeyHeader;
 }
