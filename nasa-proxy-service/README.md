@@ -19,7 +19,7 @@ use this url to download the largest picture from nasa service:
 http://localhost:9090/mars/pictures/largest?sol=15&camera=NAVCAM
 
 !!! Don't forget to check the response and grab the value of header 'x-nasa-largest-picture-id' !!!
-This is should be used in the next step.
+This should be used in the next step.
 
 use this url to make sure the picture is stored in redis:
 http://localhost:9090/mars/pictures/redis/largest?id=15e01c28-0c69-4092-a681-5001cce28af6

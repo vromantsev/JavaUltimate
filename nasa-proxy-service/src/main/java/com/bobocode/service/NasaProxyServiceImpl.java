@@ -54,5 +54,5 @@ public class NasaProxyServiceImpl implements NasaProxyService {
                 .queryParam(this.appProperties.getSolHeader(), sol)
                 .queryParamIfPresent(this.appProperties.getCameraHeader(), Optional.ofNullable(camera))
                 .toUriString();
-    }//15e01c28-0c69-4092-a681-5001cce28af6
+    }
 }
