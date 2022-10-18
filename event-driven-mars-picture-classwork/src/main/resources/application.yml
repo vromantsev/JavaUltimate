@@ -1,0 +1,20 @@
+spring:
+  rabbitmq:
+    host: 93.175.204.87
+    listener:
+      simple:
+        default-requeue-rejected: false
+
+app:
+  queue-name: romantsev-picture-request-queue
+  fanout-binding: picture-request-fanout
+  result-queue: picture-result-queue
+  nasa:
+    api:
+      external:
+        url: https://api.nasa.gov/mars-photos/api/v1/rovers/curiosity/photos
+        api-key: DEMO_KEY
+      headers:
+        sol: sol
+        camera: camera
+        api-key: api_key
