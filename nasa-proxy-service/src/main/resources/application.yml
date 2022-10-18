@@ -1,0 +1,11 @@
+app:
+  nasa:
+    api:
+      url: http://localhost:8080/mars/pictures/largest
+      headers:
+        sol: sol
+        camera: camera
+        api-key: api_key
+
+server:
+  port: 9090
