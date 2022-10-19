@@ -22,6 +22,7 @@
         <module>mars-largest-picture</module>
         <module>url-shortener-redis</module>
         <module>mars-largest-pic-reactive</module>
+        <module>nasa-proxy-service</module>
     </modules>
 
     <properties>
