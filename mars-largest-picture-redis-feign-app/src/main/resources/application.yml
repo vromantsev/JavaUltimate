@@ -1,0 +1,13 @@
+app:
+  nasa:
+    url: http://localhost:8080
+    endpoint: /mars/pictures/largest
+
+spring:
+  application:
+    name: nasa-proxy-service
+  cache:
+    type: redis
+
+server:
+  port: 9090
