@@ -1,0 +1,5 @@
+nasa:
+  base-url: https://api.nasa.gov
+  photos:
+    endpoint: /mars-photos/api/v1/rovers/curiosity/photos
+  api-key: DEMO_KEY
