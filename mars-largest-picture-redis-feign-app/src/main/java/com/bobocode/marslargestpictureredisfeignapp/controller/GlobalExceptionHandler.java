@@ -1,4 +1,4 @@
-package com.bobocode.marslargestpicturefeignapp.controller;
+package com.bobocode.marslargestpictureredisfeignapp.controller;
 
 import feign.FeignException;
 import org.springframework.http.HttpStatus;

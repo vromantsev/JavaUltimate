@@ -1,6 +1,6 @@
-package com.bobocode.marslargestpicturefeignapp.service;
+package com.bobocode.marslargestpictureredisfeignapp.service;
 
-import com.bobocode.marslargestpicturefeignapp.client.MarsProxyFeignClient;
+import com.bobocode.marslargestpictureredisfeignapp.client.MarsProxyFeignClient;
 import lombok.RequiredArgsConstructor;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;

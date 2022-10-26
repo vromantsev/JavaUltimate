@@ -1,4 +1,4 @@
-package com.bobocode.marslargestpicturefeignapp.client;
+package com.bobocode.marslargestpictureredisfeignapp.client;
 
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.http.MediaType;

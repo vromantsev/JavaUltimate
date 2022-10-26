@@ -1,4 +1,4 @@
-package com.bobocode.marslargestpicturefeignapp.service;
+package com.bobocode.marslargestpictureredisfeignapp.service;
 
 public interface NasaPictureService {
 

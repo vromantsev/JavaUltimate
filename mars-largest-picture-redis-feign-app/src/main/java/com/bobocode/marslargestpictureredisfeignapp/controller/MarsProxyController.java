@@ -1,6 +1,6 @@
-package com.bobocode.marslargestpicturefeignapp.controller;
+package com.bobocode.marslargestpictureredisfeignapp.controller;
 
-import com.bobocode.marslargestpicturefeignapp.service.NasaPictureService;
+import com.bobocode.marslargestpictureredisfeignapp.service.NasaPictureService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
